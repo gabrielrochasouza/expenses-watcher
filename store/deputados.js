@@ -4,7 +4,22 @@ export const state = (state) => ({
   politicians: [],
   politicianInfo: {},
   expenses: [],
+  historyRequests: [],
 })
+
+const eliminateRepetition = (value)=>{
+  if(value.length){
+    const orderedById = value.sort((a,b)=> a.id - b.id)
+    const result = [orderedById[0]]
+    for(let i=1; i<orderedById.length ;i++) {
+      if(!result.some(r=>r.id==orderedById[i].id && r.ano==orderedById[i].ano)){
+        result.push(orderedById[i])
+      }
+    }
+    return result
+  }
+}
+
 
 export const mutations = {
   SET_POLITICIANS(state, value) {
@@ -18,6 +33,29 @@ export const mutations = {
   },
   SET_EXPENSES_ACC(state, value) {
     state.expenses = [...state.expenses, ...value]
+  },
+  SET_HISTORY_REQUESTS(state, value) {
+    state.historyRequests = eliminateRepetition(state.historyRequests)
+    state.historyRequests = eliminateRepetition(value)
+    localStorage.setItem('@memory', JSON.stringify(eliminateRepetition(value)))
+  },
+  UPDATE_HISTORY(state, value) {
+    state.historyRequests = eliminateRepetition(state.historyRequests)
+    let req = state.historyRequests.find(
+      (r) => r.id === value.id && r.ano === value.ano
+    )
+    let index = state.historyRequests.findIndex(
+      (r) => r.id === value.id && r.ano === value.ano
+    )
+    state.historyRequests = [
+      ...state.historyRequests.map((h, i) => (i == index ? value : h)),
+    ]
+    localStorage.setItem(
+      '@memory',
+      JSON.stringify([
+        ...state.historyRequests.map((h, i) => (i == index ? value : h)),
+      ])
+    )
   },
 }
 
@@ -46,5 +84,26 @@ export const actions = {
       commit('SET_EXPENSES_ACC', res.data.dados)
       return res
     })
+  },
+  setHistoryRequests({ commit }) {
+    const memoryString = localStorage.getItem('@memory')
+    if (memoryString) {
+      const memory = JSON.parse(memoryString)
+      commit('SET_HISTORY_REQUESTS', memory)
+    }
+  },
+  setHistoryPayload({ commit, state }, payload) {
+    if (
+      !state.historyRequests.some(
+        (h) => h.id == payload.id && h.ano == payload.ano
+      )
+    ) {
+      commit('SET_HISTORY_REQUESTS', payload)
+    } else {
+      commit('UPDATE_HISTORY', payload)
+    }
+  },
+  updateHistoryPayload({ commit }, payload) {
+    commit('UPDATE_HISTORY', payload)
   },
 }

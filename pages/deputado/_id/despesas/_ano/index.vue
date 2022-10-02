@@ -12,12 +12,17 @@
         <div>
           {{ politicianInfo['nomeCivil'] }}
           <v-subheader class="subheader ma-0 pa-0">
-            {{ politicianInfo?.ultimoStatus?.siglaPartido }}</v-subheader
+            {{ politicianInfo?.ultimoStatus?.siglaPartido }} -
+            {{ politicianInfo.ultimoStatus?.siglaUf }}</v-subheader
           >
         </div>
-      <v-spacer></v-spacer>
-      <v-btn @click="dialog = true" class="mr-2 btn-position" color="primary">Escolher Outro Ano</v-btn>
-      <v-btn class="btn-position" :to="`/deputado/${$route.params.id}`">Voltar</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn @click="dialog = true" class="mr-2 btn-position" color="primary"
+          >Escolher Outro Ano</v-btn
+        >
+        <v-btn class="btn-position" :to="`/deputado/${$route.params.id}`"
+          >Voltar</v-btn
+        >
       </v-card-title>
     </v-card>
 
@@ -26,7 +31,7 @@
         Despesas do ano de {{ $route.params.ano }}
         <v-spacer></v-spacer>
 
-        <span>Total gasto R$:{{ totalExpend }} </span>
+        <span>Total gasto {{ totalExpend | formatter }} </span>
       </v-card-title>
 
       <template>
@@ -38,20 +43,34 @@
         ></v-data-table>
       </template>
     </v-card>
-    <choose-year v-model="dialog" v-on:dialogChange="close" :allYears='allYears' :dialog="dialog" ></choose-year>
-    <expenses-graph :values="monthValues" />
+    <choose-year
+      v-model="dialog"
+      v-on:dialogChange="close"
+      :allYears="allYears"
+      :dialog="dialog"
+    ></choose-year>
+    <expenses-graph :monthValues="monthValues" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ExpensesGraph from '~/components/ExpensesGraph.vue'
-import ChooseYear from'~/components/ChooseYear.vue'
+import ChooseYear from '~/components/ChooseYear.vue'
 export default {
-  data(){
+  data() {
     return {
-      dialog:false,
+      dialog: false,
     }
+  },
+  filters: {
+    formatter(value) {
+      var formatter = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      })
+      return formatter.format(value)
+    },
   },
   async fetch({ params, store, error }) {
     try {
@@ -76,6 +95,8 @@ export default {
         }
       }
       await store.dispatch('deputados/setPolitician', id)
+
+      store.dispatch('deputados/setHistoryRequests')
     } catch (err) {
       error({
         message: err.message,
@@ -83,12 +104,55 @@ export default {
       })
     }
   },
+  created() {
+    const politicianData = {
+      name: this.politicianInfo.nomeCivil,
+      img: this.politicianInfo?.ultimoStatus?.urlFoto,
+      partido: this.politicianInfo?.ultimoStatus?.siglaPartido,
+      siglaUf: this.politicianInfo.ultimoStatus?.siglaUf,
+    }
+    const expensesInfo = [...this.$store.state.deputados.historyRequests]
+    const totalExpend = this.expenses.reduce((acc, e) => e.valorLiquido + acc, 0).toFixed(2)
+    const months = []
+    this.expenses.forEach((expense) => {
+        if (!months.some((month) => month.mes == expense.mes && month.ano == expense.ano)) {
+          months.push({
+            mes: expense.mes,
+            valor: expense.valorLiquido,
+            ano: expense.ano,
+          })
+        }
+      })
+
+
+    if (expensesInfo.some((exp) => exp.ano == this.$route.params.ano && exp.id == this.$route.params.id)) {
+      this.$store.dispatch('deputados/updateHistoryPayload', {
+        id: this.politicianInfo.id,
+        expensesForMonth: Number(totalExpend) / Number(months.length),
+        totalExpend: totalExpend,
+        ano: this.$route.params.ano,
+        lastTimeVisited: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+        politicianData,
+      })   
+    } else {
+      expensesInfo.push({
+        id: this.politicianInfo.id,
+        politicianData,
+        totalExpend: totalExpend,
+        expensesForMonth: Number(totalExpend) / Number(months.length),
+        ano: this.$route.params.ano,
+        lastTimeVisited:new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+      })
+      this.$store.dispatch('deputados/setHistoryPayload', expensesInfo)
+    }
+
+  },
   props: {
     ExpensesGraph,
-    ChooseYear
+    ChooseYear,
   },
   computed: {
-    close(){
+    close() {
       this.dialog = false
     },
     headers() {
@@ -140,15 +204,25 @@ export default {
     monthValues() {
       const months = []
       this.expenses.forEach((expense) => {
-        if (!months.some((m) => m.mes == expense.mes)) {
-          months.push({ mes: expense.mes, valor: expense.valorLiquido })
+        if (
+          !months.some(
+            (month) => month.mes == expense.mes && month.ano == expense.ano
+          )
+        ) {
+          months.push({
+            mes: expense.mes,
+            valor: expense.valorLiquido,
+            ano: expense.ano,
+          })
         } else {
-          months.find((m) => m.mes == expense.mes).valor += expense.valorLiquido
+          months.find(
+            (month) => month.mes == expense.mes && month.ano == expense.ano
+          ).valor += expense.valorLiquido
         }
       })
       return months
         .reverse()
-        .map((m) => ({ mes: m.mes, valor: m.valor.toFixed(2) }))
+        .map((m) => ({ mes: m.mes, valor: m.valor.toFixed(2), ano: m.ano }))
     },
     allYears() {
       const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
@@ -166,16 +240,15 @@ export default {
 </script>
 
 <style scoped>
-.subheader{
+.subheader {
   height: 10px;
 }
-.cover{
+.cover {
   object-fit: cover;
 }
 @media (max-width: 500px) {
-  .btn-position{
-    margin: 12px 0 0 0 ;
+  .btn-position {
+    margin: 12px 0 0 0;
   }
 }
-
 </style>

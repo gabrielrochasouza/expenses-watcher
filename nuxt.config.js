@@ -9,8 +9,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - dados-das-despesas',
-    title: 'dados-das-despesas',
+    titleTemplate: '%s - Expenses Watcher',
+    title: 'Expenses Watcher',
     htmlAttrs: {
       lang: 'en',
     },
@@ -20,9 +20,15 @@ export default {
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: 'https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/000000/external-expenses-digital-nomad-flaticons-lineal-color-flat-icons-2.png',
+      },
+    ],
   },
-  loading: { color: '#39b982' },
+  loading: { color: 'blue' },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 

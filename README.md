@@ -1,5 +1,34 @@
 # dados-das-despesas
 
+## Link of application deployed:
+
+<a href="http://expenses-watcher.vercel.app/">Click here to see the aplication</a>
+
+## About this project:
+
+This project was made using vue js 2, with the libraries: vuex (for state management), vuetify (for styling), nuxt js, axios (for making api calls), and it was deployed in vercel.
+
+The main purpose of this app is to watch the expenses of brazillians politicians in each year and compare their expenses. It was also made to train and improve my development skills using the vue js framework.
+
+## Images of the project
+
+
+<img src="./static/app_print_example2.png"/>
+
+
+<img src="./static/app_print_example.png"/>
+
+
+## How to start the project:
+
+First you need to clone it, then access the root of your local repository than run:
+
+```
+yarn dev
+```
+
+
+
 ## Build Setup
 
 ```bash

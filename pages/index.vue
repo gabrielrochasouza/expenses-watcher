@@ -72,9 +72,7 @@ export default {
         this.$router.push('deputado/' + searchedId)
       }
     },
-    select(){
-      console.log('ok')
-    }
+
   },
 }
 </script>

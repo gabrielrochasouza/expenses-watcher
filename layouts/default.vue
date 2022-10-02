@@ -30,6 +30,13 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
+      <nuxt-link
+        to="/historico"
+        class="link-text"
+        v-show="$store.state.deputados.historyRequests.length !== 0"
+      >
+        <v-toolbar-items ripple> <v-icon>mdi-book</v-icon> </v-toolbar-items>
+      </nuxt-link>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -39,7 +46,7 @@
       </v-container>
     </v-main>
 
-    <v-footer :absolute="!fixed" app>
+    <v-footer class="text-center" :absolute="!fixed" app>
       <span
         >&copy; 2022 Criado por:
         <a
@@ -70,8 +77,13 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Sobre o site',
-          to: '/inspire',
+          title: 'Sobre o app',
+          to: '/about',
+        },
+        {
+          icon: 'mdi-book',
+          title: 'Historico pesquisas',
+          to: '/historico',
         },
       ],
       miniVariant: false,

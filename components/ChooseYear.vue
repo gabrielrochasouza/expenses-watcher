@@ -19,12 +19,15 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn
-            :disabled="!!!selectedYear"
+            :disabled="(!!selectedYear===false || disabled)"
             color="blue darken-1"
             text
+            @click="disabled = true"
             :to="`/deputado/${$route.params.id}/despesas/${selectedYear}`"
           >
-            Ver Despesas
+          <span v-show="disabled"> <v-icon class="rotate" >mdi-loading</v-icon></span>
+          <span v-show="!disabled">Ver Despesas</span>
+            
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -38,6 +41,7 @@ export default {
     return {
       dialogm1: '',
       selectedYear: '',
+      disabled: false
     }
   },
   model: {
@@ -64,4 +68,16 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.rotate {
+  animation: rotate linear 500ms infinite;
+}
+@keyframes rotate {
+  from{
+    transform: rotate(0);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+</style>
