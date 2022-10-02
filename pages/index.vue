@@ -1,87 +1,85 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-form @submit.prevent="search">
+        <h1 class="text-center mt-12 mb-0">Selecione um Deputado</h1>
+        <v-card-text class="text-center mt-0"
+          >Veja suas informações e despesas</v-card-text
+        >
+
+        <v-autocomplete
+          :items="politiciansRepresentation"
+          dense
+          outlined
+          label="Selecione um e aperte enter."
+          filled
+          rounded
+          item-text="nome"
+          item-value="nome"
+          color="white"
+          prepend-inner-icon="mdi-account-search"
+          dark
+        >
+          <template v-slot:item="data">
+            <v-list-item-avatar>
+              <img class="cover" :src="data.item.foto" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="data.item.nome"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+        </v-autocomplete>
+      </v-form>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import axios from 'axios'
+import { mapState } from 'vuex'
 export default {
   name: 'IndexPage',
+  data() {
+    return {
+      errorNotFound: false,
+    }
+  },
+  async fetch({ error, store }) {
+    try {
+      await store.dispatch('deputados/setPoliticians')
+    } catch (err) {
+      error({
+        message: err.message,
+        statusCode: err.statusCode,
+      })
+    }
+  },
+  computed: {
+    politiciansRepresentation() {
+      return this.politicians?.map((p) => ({
+        foto: p.urlFoto,
+        nome: p.nome + ' - ' + p.siglaUf + ' - ' + p.siglaPartido,
+      }))
+    },
+    ...mapState('deputados', ['politicians']),
+  },
+  methods: {
+    search(e) {
+      const nameSearched = e.target[1].value.split(' - ')[0]
+      const politician = this.politicians.find((p) => p.nome === nameSearched)
+      if (politician) {
+        const searchedId = politician.id
+        this.$router.push('deputado/' + searchedId)
+      }
+    },
+    select(){
+      console.log('ok')
+    }
+  },
 }
 </script>
+<style scoped>
+.cover {
+  object-fit: cover;
+}
+</style>

@@ -22,7 +22,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-
+  loading: { color: '#39b982' },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
