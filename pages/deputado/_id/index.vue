@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mt-8 mb-10 mx-auto pa-3" max-width="600px">
+    <v-card class="mt-8 mb-10 mx-auto pa-3" max-width="680px">
       <v-card-title>
         <v-avatar class="mr-5" size="48" left>
           <img
@@ -193,7 +193,8 @@ export default {
     },
     allYears() {
       const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
-      const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
+      // const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
+      const firstYear = 2019
       const currentYear = Number(new Date().getFullYear())
       const years = []
       for (let i = firstYear; i <= currentYear; i++) {

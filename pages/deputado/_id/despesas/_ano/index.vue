@@ -226,7 +226,8 @@ export default {
     },
     allYears() {
       const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
-      const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
+      // const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
+      const firstYear = 2019
       const currentYear = Number(new Date().getFullYear())
       const years = []
       for (let i = firstYear; i <= currentYear; i++) {

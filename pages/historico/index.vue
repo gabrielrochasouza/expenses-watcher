@@ -2,52 +2,54 @@
   <div>
     <v-row class="mt-4 mb-4 pa-1 dark">
       <v-col>
-        <v-title> Histórico das Pesquisas </v-title>
+        <v-card class="pa-4">
+          <v-title> Histórico das Pesquisas </v-title>
 
-        <div class="mt-4 pa-0" v-for="(yearData, index) in rank" :key="index">
-          <v-card-text class="mb-4 mt-10">
-            Ano: {{ yearData.ano }}
-          </v-card-text>
-          <v-card
-            color="rgba(0,0,0,0.2)"
-            ripple
-            class="mb-2 pa-3 d-flex align-center flex-wrap"
-            v-for="(data, indexData) in yearData.data"
-            :key="indexData"
-          >
-            <v-avatar left class="mr-4">
-              <img
-                class="cover"
-                :src="data.politicianData.img"
-                :alt="data.politicianData.name"
-              />
-            </v-avatar>
-            <v-card-subtitle class="short">
-              {{ indexData + 1 }}° {{ data.politicianData.name }}
-              <v-card-text>
-                {{ data.politicianData.partido }} -
-                {{ data.politicianData.siglaUf }}
-              </v-card-text>
-            </v-card-subtitle>
+          <div class="mt-4 pa-0" v-for="(yearData, index) in rank" :key="index">
+            <v-card-text class="mb-4 mt-10">
+              Ano: {{ yearData.ano }}
+            </v-card-text>
+            <v-card
+              color="rgba(0,0,0,0.2)"
+              ripple
+              class="mb-2 pa-3 d-flex align-center flex-wrap"
+              v-for="(data, indexData) in yearData.data"
+              :key="indexData"
+            >
+              <v-avatar left class="mr-4">
+                <img
+                  class="cover"
+                  :src="data.politicianData.img"
+                  :alt="data.politicianData.name"
+                />
+              </v-avatar>
+              <v-card-subtitle class="short">
+                {{ indexData + 1 }}° {{ data.politicianData.name }}
+                <v-card-text>
+                  {{ data.politicianData.partido }} -
+                  {{ data.politicianData.siglaUf }}
+                </v-card-text>
+              </v-card-subtitle>
 
-            <v-spacer></v-spacer>
-            <div class="expenses">
-              <v-subheader class="mt-0 mb-0 pa-0 subheader"
-                >Gasto por mês:
-                <strong> {{ data.expensesForMonth | formatter }}</strong>
-              </v-subheader>
-              <v-subheader class="mt-0 mb-0 pa-0 subheader"
-                >Gasto Total:
-                <strong>
-                  {{ data.totalExpend | formatter }}
-                </strong>
-              </v-subheader>
-              <v-subheader class="mt-0 mb-0 pa-0 subheader small">
-                Visto: {{ data.lastTimeVisited }}
-              </v-subheader>
-            </div>
-          </v-card>
-        </div>
+              <v-spacer></v-spacer>
+              <div class="expenses">
+                <v-subheader class="mt-0 mb-0 pa-0 subheader"
+                  >Gasto por mês:
+                  <strong> {{ data.expensesForMonth | formatter }}</strong>
+                </v-subheader>
+                <v-subheader class="mt-0 mb-0 pa-0 subheader"
+                  >Gasto Total:
+                  <strong>
+                    {{ data.totalExpend | formatter }}
+                  </strong>
+                </v-subheader>
+                <v-subheader class="mt-0 mb-0 pa-0 subheader small">
+                  Visto: {{ data.lastTimeVisited }}
+                </v-subheader>
+              </div>
+            </v-card>
+          </div>
+        </v-card>
       </v-col>
     </v-row>
   </div>
@@ -106,13 +108,13 @@ div {
   padding: 0;
 }
 .subheader {
-    height: 20px;
+  height: 20px;
   justify-content: end;
   font-size: 13px;
   height: 16px;
 }
-.small{
-    font-size: 10px;
+.small {
+  font-size: 10px;
 }
 @media (max-width: 540px) {
   .expenses {
