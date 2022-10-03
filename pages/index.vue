@@ -1,7 +1,7 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-form @submit.prevent="search">
+  <v-row class="mt-6" justify="center" align="center">
+    <v-col class="mt-10" cols="12" sm="8" md="6">
+      <v-form  @submit.prevent="search">
         <h1 class="text-center mt-16 mb-0">Selecione um Deputado</h1>
         <v-card-text class="text-center mt-0"
           >Veja suas informações e despesas</v-card-text
