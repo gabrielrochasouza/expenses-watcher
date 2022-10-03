@@ -21,12 +21,20 @@ The main purpose of this app is to watch the expenses of brazillians politicians
 
 ## How to start the project:
 
-First you need to clone it, then access the root of your local repository than run:
+First you need to clone it, then access the root of your local repository then run:
 
+
+To install all dependencies.
+```
+yarn
+```
+
+To run project on localhost port 3000.
 ```
 yarn dev
 ```
 
+Then access http://localhost:3000/
 
 
 ## Build Setup
