@@ -3,7 +3,7 @@
     <v-card-title class="text-center">
       Gráfico dos Gastos
       <v-spacer></v-spacer>
-      Média gasta por mês {{ mean | formatter }}
+       Média gasta por mês {{ mean | formatter }}
     </v-card-title>
     <v-sheet color="rgba(255, 255, 255 )">
       <template>
@@ -82,11 +82,10 @@ export default {
       return this.monthValues.map((monthValue) => Number(monthValue.valor))
     },
     mean() {
-      return (
-        this.monthValues
+      const sumMonthValues = this.monthValues
           .map((monthValue) => Number(monthValue.valor))
-          .reduce((v, acc) => v + acc, 0) / this.monthValues.length
-      ).toFixed(2)
+          .reduce((v, acc) => v + acc, 0);
+      return sumMonthValues ? (sumMonthValues / this.monthValues.length).toFixed(2) : (0).toFixed(2);
     },
     chartData() {
       const monthsInPortuguese = [

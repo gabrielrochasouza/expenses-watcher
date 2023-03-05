@@ -13,7 +13,7 @@
               :value="year"
               name="year"
               @click="selectedYear = year"
-            ></v-radio>
+            />
           </v-radio-group>
         </v-card-text>
         <v-divider></v-divider>

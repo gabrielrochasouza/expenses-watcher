@@ -5,24 +5,28 @@
         <v-avatar class="mr-5" size="48" left>
           <img
             class="cover"
-            :src="politicianInfo?.ultimoStatus?.urlFoto"
+            :src="politicianInfo.ultimoStatus.urlFoto"
             :alt="politicianInfo.nomeCivil"
           />
         </v-avatar>
-        <div>
-          {{ politicianInfo['nomeCivil'] }}
+        <div class="title-block-text">
+          <div class="main-title-text">
+            {{ politicianInfo['nomeCivil'] }}
+          </div>
           <v-subheader class="subheader ma-0 pa-0">
-            {{ politicianInfo?.ultimoStatus?.siglaPartido }} -
-            {{ politicianInfo.ultimoStatus?.siglaUf }}</v-subheader
+            {{ politicianInfo.ultimoStatus.siglaPartido }} -
+            {{ politicianInfo.ultimoStatus.siglaUf }}
+          </v-subheader
           >
         </div>
-        <v-spacer></v-spacer>
-        <v-btn @click="dialog = true" class="mr-2 btn-position" color="primary"
-          >Escolher Outro Ano</v-btn
-        >
-        <v-btn class="btn-position" :to="`/deputado/${$route.params.id}`"
-          >Voltar</v-btn
-        >
+        <v-card-actions>
+          <v-btn @click="dialog = true" class="mr-2 btn-position" color="primary">
+            Escolher Outro Ano
+          </v-btn>
+          <v-btn class="btn-position" :to="`/deputado/${$route.params.id}`">
+            Voltar
+          </v-btn>
+        </v-card-actions>
       </v-card-title>
     </v-card>
 
@@ -65,11 +69,11 @@ export default {
   },
   filters: {
     formatter(value) {
-      var formatter = new Intl.NumberFormat('pt-BR', {
+      const formatter = new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL',
       })
-      return formatter.format(value)
+      return value ? formatter.format(value) : 'R$ 0,00'
     },
   },
   async fetch({ params, store, error }) {
@@ -107,9 +111,9 @@ export default {
   created() {
     const politicianData = {
       name: this.politicianInfo.nomeCivil,
-      img: this.politicianInfo?.ultimoStatus?.urlFoto,
-      partido: this.politicianInfo?.ultimoStatus?.siglaPartido,
-      siglaUf: this.politicianInfo.ultimoStatus?.siglaUf,
+      img: this.politicianInfo.ultimoStatus.urlFoto,
+      partido: this.politicianInfo.ultimoStatus.siglaPartido,
+      siglaUf: this.politicianInfo.ultimoStatus.siglaUf,
     }
     const expensesInfo = [...this.$store.state.deputados.historyRequests]
     const totalExpend = this.expenses.reduce((acc, e) => e.valorLiquido + acc, 0).toFixed(2)
@@ -185,7 +189,7 @@ export default {
       ]
     },
     expensesInfo() {
-      return this.expenses?.map((e) => {
+      return this.expenses.map((e) => {
         return {
           dataDocumento: e.dataDocumento?.split('-').reverse().join('/'),
           tipoDespesa: e.tipoDespesa,
@@ -225,13 +229,14 @@ export default {
         .map((m) => ({ mes: m.mes, valor: m.valor.toFixed(2), ano: m.ano }))
     },
     allYears() {
-      const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
-      // const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
+      const lastUpdateDate = this.politicianInfo.ultimoStatus.data
       const firstYear = 2019
       const currentYear = Number(new Date().getFullYear())
       const years = []
       for (let i = firstYear; i <= currentYear; i++) {
-        years.push(i.toString())
+        if (Number(this.$route.params.ano) !== Number(i)) {
+          years.push(i.toString())
+        }
       }
       return years
     },
@@ -241,15 +246,28 @@ export default {
 </script>
 
 <style scoped>
-.subheader {
-  height: 10px;
-}
-.cover {
-  object-fit: cover;
-}
-@media (max-width: 500px) {
-  .btn-position {
-    margin: 12px 0 0 0;
+  .subheader {
+    height: 10px;
   }
-}
+  .cover {
+    object-fit: cover;
+  }
+  .main-title-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .title-block-text {
+    flex: 1;
+    max-width: calc(100% - 68px);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0 !important;
+    overflow: hidden;
+    min-width: 200px;
+  }
+  @media (max-width: 500px) {
+    .btn-position {
+      margin: 12px 0 0 0;
+    }
+  }
 </style>

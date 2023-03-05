@@ -1,8 +1,8 @@
 <template>
-  <v-form  @submit.prevent="search">
-    <v-row class="mt-6" justify="center" align="center">
-      <v-col class="mt-10 mb-0 pa-0" cols="12" sm="8" md="6">
-        <h1 class="text-center mt-16 mb-0 pa-0">Selecione um Deputado</h1>
+  <v-form class="min-height" @submit.prevent="search">
+    <v-row class="mt-0" justify="center" align="center">
+      <v-col class="mt-0 mb-0 pa-0" cols="12" sm="8" md="6">
+        <h1 class="text-center mt-0 mb-0 pa-0">Selecione um Deputado</h1>
         <v-card-text class="text-center mt-0 pa-0 mb-4">
           Veja suas informações e despesas
         </v-card-text>
@@ -19,7 +19,7 @@
           color="white"
           prepend-inner-icon="mdi-account-search"
           dark
-          class="pa-0 ma-0"
+          class="pa-0 ma-0 max-width-autocomplete"
           v-model='deputy'
           @change='search'
         >
@@ -100,5 +100,19 @@ export default {
 <style scoped>
 .cover {
   object-fit: cover;
+}
+.max-width-autocomplete {
+  max-width: 600px;
+  margin: 0 auto !important;
+  text-align: center;
+}
+.min-height {
+  min-height: 360px;
+}
+@media (max-width: 600px) {
+  .max-width-autocomplete {
+    max-width: 90%;
+    margin: 0 auto !important;
+  }
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <v-app dark>
     <v-navigation-drawer
+      class="navigation-drawer"
       v-model="drawer"
       :mini-variant="false"
       :clipped="false"
@@ -39,14 +40,14 @@
       </nuxt-link>
     </v-app-bar>
     <v-main>
-      <v-container>
+      <v-container class="center-content">
         <transition name="fade-slide" appear mode="out-in">
           <Nuxt />
         </transition>
       </v-container>
     </v-main>
 
-    <v-footer class="text-center" :absolute="!fixed" app>
+    <v-footer class="text-center move-up" :absolute="!fixed" app>
       <span
         >&copy; 2022 Criado por:
         <a
@@ -96,26 +97,39 @@ export default {
 </script>
 
 <style scoped>
-.link-text {
-  color: #fff;
-  text-decoration: none;
-}
-.fade-slide-enter {
-  opacity: 0;
-  transform: translateX(200px);
-}
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: 1000ms all;
-}
-.fade-slide-leave-to {
-  transform: translateX(-200px);
-  opacity: 0;
-}
-.bold {
-  font-weight: bold;
-}
-.subheader {
-  height: 10px;
-}
+  .link-text {
+    color: #fff;
+    text-decoration: none;
+  }
+  .fade-slide-enter {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+  .fade-slide-enter-active,
+  .fade-slide-leave-active {
+    transition: 1000ms all;
+  }
+  .fade-slide-leave-to {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .subheader {
+    height: 10px;
+  }
+  .center-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  .navigation-drawer {
+    max-height: none !important;
+    z-index: 10;
+  }
+  .move-up {
+    z-index: 20;
+  }
 </style>

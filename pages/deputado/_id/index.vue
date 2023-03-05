@@ -1,17 +1,23 @@
 <template>
   <div>
     <v-card class="mt-8 mb-10 mx-auto pa-3" max-width="680px">
-      <v-card-title>
+      <v-card-title class="flex-1">
         <v-avatar class="mr-5" size="48" left>
           <img
             class="photo"
-            :src="politicianInfo?.ultimoStatus?.urlFoto"
+            :src="politicianInfo.ultimoStatus.urlFoto"
             :alt="politicianInfo.nomeCivil"
           />
         </v-avatar>
-        <div>
-        {{ politicianInfo['nomeCivil'] }}
-        <v-subheader class="subheader ma-0 pa-0"> {{ politicianInfo?.ultimoStatus?.siglaPartido }}</v-subheader>
+        <div class="flex-1 main-title-text">
+          <div class="flex-1">
+            <div class="main-title-text">
+              {{ politicianInfo['nomeCivil'] }}
+            </div>
+            <v-subheader class="subheader ma-0 pa-0">
+              {{ politicianInfo.ultimoStatus.siglaPartido }}
+            </v-subheader>
+          </div>
 
         </div>
       </v-card-title>
@@ -20,22 +26,23 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6">
-            <p>Situação: {{ politicianInfo?.ultimoStatus?.situacao }}</p>
+            <p>Deputado: {{ politicianInfo['nomeCivil'] }}</p>
+            <p>Situação: {{ politicianInfo.ultimoStatus.situacao }}</p>
             <p>
               Condição Eleitoral:
-              {{ politicianInfo?.ultimoStatus?.condicaoEleitoral }}
+              {{ politicianInfo.ultimoStatus.condicaoEleitoral }}
             </p>
             <p>
               Descrição Status:
               {{
-                politicianInfo?.ultimoStatus?.descricaoStatus || 'Não informado'
+                politicianInfo.ultimoStatus.descricaoStatus || 'Não informado'
               }}
             </p>
-            <ul v-if="politicianInfo?.ultimoStatus?.gabinete">
+            <ul v-if="politicianInfo.ultimoStatus.gabinete">
               Gabinete Info:
               <li
                 v-for="(gabInfo, index) in Object.entries(
-                  politicianInfo?.ultimoStatus?.gabinete
+                  politicianInfo.ultimoStatus.gabinete
                 )"
                 :key="index"
               >
@@ -48,36 +55,36 @@
           </v-col>
 
           <v-col cols="12" sm="6">
-            <p>Sigla UF: {{ politicianInfo?.ultimoStatus?.siglaUf }}</p>
-            <p>CPF: {{ politicianInfo?.cpf }}</p>
-            <p>Escolaridade: {{ politicianInfo?.escolaridade }}</p>
+            <p>Sigla UF: {{ politicianInfo.ultimoStatus.siglaUf }}</p>
+            <p>CPF: {{ politicianInfo.cpf }}</p>
+            <p>Escolaridade: {{ politicianInfo.escolaridade }}</p>
             <p>
               Data de Nascimento:
-              {{ politicianInfo?.dataNascimento | birtDateFormatter }}
+              {{ politicianInfo.dataNascimento | birtDateFormatter }}
             </p>
-            <p v-if="politicianInfo?.dataFalecimento">
-              Data de Falescimento: {{ politicianInfo?.dataFalecimento }}
+            <p v-if="politicianInfo.dataFalecimento">
+              Data de Falescimento: {{ politicianInfo.dataFalecimento }}
             </p>
-            <p>UF de Nascimento: {{ politicianInfo?.ufNascimento }}</p>
+            <p>UF de Nascimento: {{ politicianInfo.ufNascimento }}</p>
             <p>
-              Município de Nascimento: {{ politicianInfo?.municipioNascimento }}
-            </p>
-            <p>
-              Nome Eleitoral: {{ politicianInfo?.ultimoStatus?.nomeEleitoral }}
+              Município de Nascimento: {{ politicianInfo.municipioNascimento }}
             </p>
             <p>
-              Sigla Partido: {{ politicianInfo?.ultimoStatus?.siglaPartido }}
+              Nome Eleitoral: {{ politicianInfo.ultimoStatus.nomeEleitoral }}
+            </p>
+            <p>
+              Sigla Partido: {{ politicianInfo.ultimoStatus.siglaPartido }}
             </p>
             <p>
               Data da Última Atualização:
-              {{ politicianInfo?.ultimoStatus?.data | lastUpdateFormatter }}
+              {{ politicianInfo.ultimoStatus.data | lastUpdateFormatter }}
             </p>
           </v-col>
         </v-row>
 
         <div
           class="socialMedia"
-          v-if="politicianInfo?.redeSocial && socialMedia"
+          v-if="politicianInfo.redeSocial && socialMedia"
         >
           <a
             :href="socialMedia.youtube"
@@ -181,8 +188,8 @@ export default {
       return this.dialog = true
     },
     socialMedia() {
-      if (this.politicianInfo?.redeSocial) {
-        const redeSocial = this.politicianInfo?.redeSocial
+      if (this.politicianInfo.redeSocial) {
+        const redeSocial = this.politicianInfo.redeSocial
         const twitter = redeSocial.find((r) => r.includes('twitter'))
         const youtube = redeSocial.find((r) => r.includes('youtube'))
         const instagram = redeSocial.find((r) => r.includes('instagram'))
@@ -192,7 +199,7 @@ export default {
       return null
     },
     allYears() {
-      const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
+      const lastUpdateDate = this.politicianInfo.ultimoStatus.data
       // const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
       const firstYear = 2019
       const currentYear = Number(new Date().getFullYear())
@@ -213,32 +220,49 @@ export default {
 </script>
 
 <style scoped>
-p,
-ul,
-li {
-  margin: 0;
-}
-ul {
-  padding: 0;
-}
-.subtitle {
-  font-size: bold;
-  font-size: 18px;
-}
-li {
-  padding: 0 0 0 8px;
-  list-style: none;
-}
-.photo {
-  object-fit: cover;
-}
-.subheader{
-  height: 10px;
-}
-.socialMedia {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px 0 0;
-}
+  p,
+  ul,
+  li {
+    margin: 0;
+  }
+  ul {
+    padding: 0;
+  }
+  .subtitle {
+    font-size: bold;
+    font-size: 18px;
+  }
+  li {
+    padding: 0 0 0 8px;
+    list-style: none;
+  }
+  .photo {
+    object-fit: cover;
+  }
+  .subheader{
+    height: 10px;
+  }
+  .socialMedia {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0 0;
+  }
+  .main-title-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .title-block-text {
+    flex: 1;
+    max-width: calc(100% - 68px);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin: 0 !important;
+    overflow: hidden;
+    min-width: 200px;
+  }
+  .flex-1 {
+    flex: 1;
+  }
 </style>
