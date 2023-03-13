@@ -34,7 +34,6 @@
       <nuxt-link
         to="/historico"
         class="link-text"
-        v-show="$store.state.deputados.historyRequests.length !== 0"
       >
         <v-toolbar-items ripple> <v-icon>mdi-book</v-icon> </v-toolbar-items>
       </nuxt-link>
