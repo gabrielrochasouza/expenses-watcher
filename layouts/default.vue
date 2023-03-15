@@ -31,12 +31,9 @@
         <v-toolbar-title v-text="title" />
       </nuxt-link>
       <v-spacer />
-      <nuxt-link
-        to="/historico"
-        class="link-text"
-      >
-        <v-toolbar-items ripple> <v-icon>mdi-book</v-icon> </v-toolbar-items>
-      </nuxt-link>
+      <v-toolbar-items v-if="rank.length" @click='bottomDrawer = !bottomDrawer ' ripple class="pointer">
+        <v-icon>mdi-book</v-icon>
+      </v-toolbar-items>
     </v-app-bar>
     <v-main>
       <v-container class="center-content">
@@ -45,6 +42,58 @@
         </transition>
       </v-container>
     </v-main>
+    <v-navigation-drawer
+      v-model="bottomDrawer"
+      :mini-variant="false"
+      :clipped="false"
+      class="z-index-max min-width-navigation-drawer"
+      temporary
+      fixed
+      floating
+      right
+      bottom
+      dark
+    >
+      <v-list density="compact" class="pa-3">
+        Histórico de pesquisas
+      </v-list>
+      <v-expansion-panels
+        multiple
+      >
+        <v-expansion-panel v-for="(data, index) in rank" :key="'panelIndex:' + index" class="pa-0">
+          <v-expansion-panel-header>Ano {{ data.ano }}</v-expansion-panel-header>
+          <v-expansion-panel-content class="pa-0 ma-0" >
+            <v-list 
+              ripple
+              class="d-flex align-center flex-wrap pa-0 my-4"
+              v-for="(data, indexData) in data.data"
+              :key="indexData"
+            >
+              <v-avatar left class="mr-4">
+                <img
+                  class="cover"
+                  :src="data.politicianData.img"
+                  :alt="data.politicianData.name"
+                />
+              </v-avatar>
+              <div class="small-line-height text-max-width text-overflow-hidden">
+                <p class="pa-0 ma-0 small-line-height small text-overflow-hidden">
+                  {{ indexData + 1 }}° {{ data.politicianData.name }}
+                </p>
+                <p class="pa-0 ma-0 small small-line-height text-overflow-hidden">
+                  {{ data.politicianData.partido }} -
+                  {{ data.politicianData.siglaUf }}
+                </p>
+                <p class="mt-0 mb-0 pa-0 small small-line-height"
+                  >Total Gasto:
+                    R$ {{ data.totalExpend | formatter }}
+                </p>
+              </div>
+            </v-list>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-navigation-drawer>
 
     <v-footer class="text-center move-up" :absolute="!fixed" app>
       <span
@@ -62,43 +111,100 @@
 </template>
 
 <script>
-export default {
-  name: 'DefaultLayout',
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Selecionar Deputado',
-          to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Sobre o app',
-          to: '/about',
-        },
-        {
-          icon: 'mdi-book',
-          title: 'Historico pesquisas',
-          to: '/historico',
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Expenses Watcher',
-    }
-  },
-}
+  import { mapState } from 'vuex'
+  export default {
+    name: 'DefaultLayout',
+    data() {
+      return {
+        clipped: false,
+        drawer: false,
+        bottomDrawer: false,
+        fixed: false,
+        items: [
+          {
+            icon: 'mdi-apps',
+            title: 'Selecionar Deputado',
+            to: '/',
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: 'Sobre o app',
+            to: '/about',
+          },
+          {
+            icon: 'mdi-book',
+            title: 'Historico pesquisas',
+            to: '/historico',
+          },
+        ],
+        miniVariant: false,
+        right: true,
+        rightDrawer: false,
+        title: 'Expenses Watcher',
+      }
+    },
+    created() {
+      this.$store.dispatch('deputados/setHistoryRequests')
+    },
+    computed: {
+      rank() {
+        const years = []
+        const rank = []
+        for (let i = 0; i < this.historyRequests.length; i++) {
+          if (!years.some((y) => y == this.historyRequests[i].ano)) {
+            years.push(this.historyRequests[i].ano)
+          }
+        }
+        for (let i = 0; i < years.length; i++) {
+          rank.push({
+            ano: years[i],
+            data: this.historyRequests.filter(
+              (historyRequest) => historyRequest.ano === years[i]
+            ),
+          })
+        }
+        const result = rank.map((r) => {
+          return {
+            ano: r.ano,
+            data: r.data.sort((a, b) => a.totalExpend - b.totalExpend),
+          }
+        })
+        return result.sort((a, b) => b.ano - a.ano)
+      },
+      ...mapState('deputados', ['historyRequests']),
+    },
+  }
 </script>
 
 <style scoped>
   .link-text {
     color: #fff;
     text-decoration: none;
+  }
+  @media (max-width: 300px) {
+    .min-width-navigation-drawer {
+      min-width: 300px;
+    }
+  }
+  .pointer {
+    cursor: pointer;
+  }
+  .text-overflow-hidden {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .text-max-width {
+    max-width: calc(100% - 64px);
+  }
+  .overflow-auto {
+    overflow: auto;
+  }
+  .small {
+    font-size: 10px;
+  }
+  .small-line-height {
+    line-height: 0.88rem;
   }
   .fade-slide-enter {
     opacity: 0;
@@ -130,5 +236,8 @@ export default {
   }
   .move-up {
     z-index: 20;
+  }
+  .z-index-max {
+    z-index: 30;
   }
 </style>
