@@ -54,7 +54,7 @@
       bottom
       dark
     >
-      <v-list density="compact" class="pa-3">
+      <v-list density="compact" class="pa-3 history-subheader">
         Histórico de pesquisas
       </v-list>
       <v-expansion-panels
@@ -181,10 +181,17 @@
     color: #fff;
     text-decoration: none;
   }
-  @media (max-width: 300px) {
+  @media (min-width: 1264px) {
     .min-width-navigation-drawer {
-      min-width: 300px;
+      min-width: 400px;
     }
+  }
+  .history-subheader {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 19;
+    background:#292929 !important;
   }
   .pointer {
     cursor: pointer;
