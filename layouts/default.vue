@@ -86,7 +86,7 @@
                 </p>
                 <p class="mt-0 mb-0 pa-0 small small-line-height"
                   >Total Gasto:
-                    R$ {{ data.totalExpend | formatter }}
+                    R$ {{ data.totalExpend | formatter }} - Visto: {{ data.lastTimeVisited }}
                 </p>
               </div>
             </v-list>
@@ -145,6 +145,15 @@
     },
     created() {
       this.$store.dispatch('deputados/setHistoryRequests')
+    },
+    filters: {
+      formatter(value) {
+        var formatter = new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })
+        return formatter.format(value)
+      },
     },
     computed: {
       rank() {
