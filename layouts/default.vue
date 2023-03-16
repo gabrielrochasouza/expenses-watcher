@@ -61,7 +61,7 @@
         multiple
       >
         <v-expansion-panel v-for="(data, index) in rank" :key="'panelIndex:' + index" class="pa-0">
-          <v-expansion-panel-header>Ano {{ data.ano }}</v-expansion-panel-header>
+          <v-expansion-panel-header class="expansion-header">Ano {{ data.ano }}</v-expansion-panel-header>
           <v-expansion-panel-content class="pa-0 ma-0" >
             <v-list 
               ripple
@@ -190,6 +190,13 @@
   .link-text {
     color: #fff;
     text-decoration: none;
+  }
+  .expansion-header {
+    position: sticky;
+    top: 47px;
+    z-index: 10;
+    background: #1e1e1e;
+    left: 0;
   }
   @media (min-width: 1264px) {
     .min-width-navigation-drawer {
