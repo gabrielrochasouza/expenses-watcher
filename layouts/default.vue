@@ -69,13 +69,15 @@
               v-for="(data, indexData) in data.data"
               :key="indexData"
             >
-              <v-avatar left class="mr-4">
-                <img
-                  class="cover"
-                  :src="data.politicianData.img"
-                  :alt="data.politicianData.name"
-                />
-              </v-avatar>
+              <nuxt-link :to="'/deputado/' + data.id">
+                <v-avatar left class="mr-4">
+                  <img
+                    class="cover"
+                    :src="data.politicianData.img"
+                    :alt="data.politicianData.name"
+                  />
+                </v-avatar>
+              </nuxt-link>
               <div class="small-line-height text-max-width text-overflow-hidden">
                 <p class="pa-0 ma-0 small-line-height small text-overflow-hidden">
                   {{ indexData + 1 }}° {{ data.politicianData.name }}
@@ -84,9 +86,8 @@
                   {{ data.politicianData.partido }} -
                   {{ data.politicianData.siglaUf }}
                 </p>
-                <p class="mt-0 mb-0 pa-0 small small-line-height"
-                  >Total Gasto:
-                    R$ {{ data.totalExpend | formatter }} - Visto: {{ data.lastTimeVisited }}
+                <p class="mt-0 mb-0 pa-0 small small-line-height text-overflow-hidden">
+                  Total Gasto: R$ {{ data.totalExpend | formatter }} - Visto: {{ data.lastTimeVisited }}
                 </p>
               </div>
             </v-list>
