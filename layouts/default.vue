@@ -43,6 +43,7 @@
       </v-container>
     </v-main>
     <v-navigation-drawer
+      v-if="bottomDrawer"
       v-model="bottomDrawer"
       :mini-variant="false"
       :clipped="false"
