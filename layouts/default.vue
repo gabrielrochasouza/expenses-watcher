@@ -87,7 +87,7 @@
                   {{ data.politicianData.siglaUf }}
                 </p>
                 <p class="mt-0 mb-0 pa-0 small small-line-height text-overflow-hidden">
-                  Total Gasto: R$ {{ data.totalExpend | formatter }} - Visto: {{ data.lastTimeVisited }}
+                  Total Gasto: {{ data.totalExpend | formatter }} - Visto: {{ data.lastTimeVisited }}
                 </p>
               </div>
             </v-list>
