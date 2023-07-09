@@ -96,7 +96,8 @@
           ano,
           pagina: 1,
         })
-        const total = Number(data.headers['x-total-count'])
+        console.log(data.data['x-total-count'])
+        const total = Number(data.data['x-total-count'])
         if (total > 100) {
           const numberOfRequests = Math.ceil(total / 100)
           const pages = Array(numberOfRequests)
@@ -161,7 +162,6 @@
         })
         this.$store.dispatch('deputados/setHistoryPayload', expensesInfo)
       }
-      console.log(this.expensesInfo.map(e => e.urlDocumento));
     },
     props: {
       ExpensesGraph,
