@@ -5,8 +5,8 @@
         <v-avatar class="mr-5" size="48" left>
           <img
             class="photo"
-            :src="politicianInfo.ultimoStatus.urlFoto"
-            :alt="politicianInfo.nomeCivil"
+            :src="politicianInfo?.ultimoStatus?.urlFoto"
+            :alt="politicianInfo?.nomeCivil"
           />
         </v-avatar>
         <div class="flex-1 main-title-text">
@@ -15,7 +15,7 @@
               {{ politicianInfo['nomeCivil'] }}
             </div>
             <v-subheader class="subheader ma-0 pa-0">
-              {{ politicianInfo.ultimoStatus.siglaPartido }}
+              {{ politicianInfo?.ultimoStatus?.siglaPartido }}
             </v-subheader>
           </div>
 
@@ -27,22 +27,22 @@
         <v-row>
           <v-col cols="12" sm="6">
             <p>Deputado: {{ politicianInfo['nomeCivil'] }}</p>
-            <p>Situação: {{ politicianInfo.ultimoStatus.situacao }}</p>
+            <p>Situação: {{ politicianInfo?.ultimoStatus?.situacao }}</p>
             <p>
               Condição Eleitoral:
-              {{ politicianInfo.ultimoStatus.condicaoEleitoral }}
+              {{ politicianInfo?.ultimoStatus?.condicaoEleitoral }}
             </p>
             <p>
               Descrição Status:
               {{
-                politicianInfo.ultimoStatus.descricaoStatus || 'Não informado'
+                politicianInfo?.ultimoStatus?.descricaoStatus || 'Não informado'
               }}
             </p>
-            <ul v-if="politicianInfo.ultimoStatus.gabinete">
+            <ul v-if="politicianInfo?.ultimoStatus?.gabinete">
               Gabinete Info:
               <li
                 v-for="(gabInfo, index) in Object.entries(
-                  politicianInfo.ultimoStatus.gabinete
+                  politicianInfo?.ultimoStatus?.gabinete
                 )"
                 :key="index"
               >
@@ -55,7 +55,7 @@
           </v-col>
 
           <v-col cols="12" sm="6">
-            <p>Sigla UF: {{ politicianInfo.ultimoStatus.siglaUf }}</p>
+            <p>Sigla UF: {{ politicianInfo?.ultimoStatus?.siglaUf }}</p>
             <p>CPF: {{ politicianInfo.cpf }}</p>
             <p>Escolaridade: {{ politicianInfo.escolaridade }}</p>
             <p>
@@ -70,14 +70,14 @@
               Município de Nascimento: {{ politicianInfo.municipioNascimento }}
             </p>
             <p>
-              Nome Eleitoral: {{ politicianInfo.ultimoStatus.nomeEleitoral }}
+              Nome Eleitoral: {{ politicianInfo?.ultimoStatus?.nomeEleitoral }}
             </p>
             <p>
-              Sigla Partido: {{ politicianInfo.ultimoStatus.siglaPartido }}
+              Sigla Partido: {{ politicianInfo?.ultimoStatus?.siglaPartido }}
             </p>
             <p>
               Data da Última Atualização:
-              {{ politicianInfo.ultimoStatus.data | lastUpdateFormatter }}
+              {{ politicianInfo?.ultimoStatus?.data | lastUpdateFormatter }}
             </p>
           </v-col>
         </v-row>
@@ -199,7 +199,7 @@ export default {
       return null
     },
     allYears() {
-      const lastUpdateDate = this.politicianInfo.ultimoStatus.data
+      const lastUpdateDate = this.politicianInfo?.ultimoStatus?.data
       // const firstYear = Number(lastUpdateDate.split('T')[0].split('-')[0])
       const firstYear = 2019
       const currentYear = Number(new Date().getFullYear())
