@@ -84,7 +84,7 @@
 
         <div
           class="socialMedia"
-          v-if="politicianInfo.redeSocial && socialMedia"
+          v-if="politicianInfo?.redeSocial && socialMedia"
         >
           <a
             :href="socialMedia.youtube"
@@ -188,8 +188,8 @@ export default {
       return this.dialog = true
     },
     socialMedia() {
-      if (this.politicianInfo.redeSocial) {
-        const redeSocial = this.politicianInfo.redeSocial
+      if (this.politicianInfo?.redeSocial) {
+        const redeSocial = this.politicianInfo?.redeSocial
         const twitter = redeSocial.find((r) => r.includes('twitter'))
         const youtube = redeSocial.find((r) => r.includes('youtube'))
         const instagram = redeSocial.find((r) => r.includes('instagram'))
