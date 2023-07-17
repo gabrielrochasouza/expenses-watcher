@@ -12,7 +12,7 @@
         <div class="flex-1 main-title-text">
           <div class="flex-1">
             <div class="main-title-text">
-              {{ politicianInfo['nomeCivil'] }}
+              {{ politicianInfo?.nomeCivil }}
             </div>
             <v-subheader class="subheader ma-0 pa-0">
               {{ politicianInfo?.ultimoStatus?.siglaPartido }}
@@ -26,7 +26,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="12" sm="6">
-            <p>Deputado: {{ politicianInfo['nomeCivil'] }}</p>
+            <p>Deputado: {{ politicianInfo?.nomeCivil }}</p>
             <p>Situação: {{ politicianInfo?.ultimoStatus?.situacao }}</p>
             <p>
               Condição Eleitoral:
@@ -56,18 +56,18 @@
 
           <v-col cols="12" sm="6">
             <p>Sigla UF: {{ politicianInfo?.ultimoStatus?.siglaUf }}</p>
-            <p>CPF: {{ politicianInfo.cpf }}</p>
-            <p>Escolaridade: {{ politicianInfo.escolaridade }}</p>
+            <p>CPF: {{ politicianInfo?.cpf }}</p>
+            <p>Escolaridade: {{ politicianInfo?.escolaridade }}</p>
             <p>
               Data de Nascimento:
-              {{ politicianInfo.dataNascimento | birtDateFormatter }}
+              {{ politicianInfo?.dataNascimento | birtDateFormatter }}
             </p>
-            <p v-if="politicianInfo.dataFalecimento">
-              Data de Falescimento: {{ politicianInfo.dataFalecimento }}
+            <p v-if="politicianInfo?.dataFalecimento">
+              Data de Falescimento: {{ politicianInfo?.dataFalecimento }}
             </p>
-            <p>UF de Nascimento: {{ politicianInfo.ufNascimento }}</p>
+            <p>UF de Nascimento: {{ politicianInfo?.ufNascimento }}</p>
             <p>
-              Município de Nascimento: {{ politicianInfo.municipioNascimento }}
+              Município de Nascimento: {{ politicianInfo?.municipioNascimento }}
             </p>
             <p>
               Nome Eleitoral: {{ politicianInfo?.ultimoStatus?.nomeEleitoral }}
